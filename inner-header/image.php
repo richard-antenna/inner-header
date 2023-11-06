@@ -1,5 +1,6 @@
 <?php
 
+
 switch ( $hero_type ) {
 	
 	case 'home':
@@ -13,7 +14,6 @@ switch ( $hero_type ) {
 	break;
 	
 }
-
 
 // Define template header image variable
 $template_header_image = "";
@@ -44,24 +44,27 @@ if (have_rows('templates', 'option')) :
                 
                     $template_header_image = get_sub_field('image')['url'];
                     
-                    if( $bg_type == "Image") {
+                    if (get_field( 'background_type' )) {
+                        
+                        $bg_type = get_field("background_type");
+                    
+                        if( $bg_type == "Image") {
 
-                    // If page header image defined use that
-                    if (get_field( 'ph_image' )) {
-                        $inner_header_image = get_field( 'ph_image' )['url'];
+                            // If page header image defined use that
+                            if (get_field( 'ph_image' )) {
+                                $inner_header_image = get_field( 'ph_image' )['url'];
+                            }
+                            // if no page header image defined use template header image
+                            elseif (!empty($template_header_image)) {
+                                $inner_header_image = $template_header_image;
+                            }
+
+                            $ph_image_position = get_field('ph_image_position');
+                            $ph_apply_image_overlay = get_field("ph_apply_image_overlay");
+                            $ph_image_overlay_strength = get_field('ph_image_overlay_strength')/100;
+                            
+                        }
                     }
-                    // if no page header image defined use template header image
-                    elseif (!empty($template_header_image)) {
-                        $inner_header_image = $template_header_image;
-                    }
-
-                    $ph_image_position = get_field('ph_image_position');
-                    $ph_apply_image_overlay = get_field("ph_apply_image_overlay");
-                    $ph_image_overlay_strength = get_field('ph_image_overlay_strength')/100;
-                }
-
-
-
                 ?>
                 <?php if($bg_type == "Image" && $ph_apply_image_overlay) : ?>
                 <style>
@@ -74,9 +77,14 @@ if (have_rows('templates', 'option')) :
 
                 default:
                 
-                    $template_header_image_id = get_sub_field('image')['id'];
-                    $template_header_image = wp_get_attachment_image( $template_header_image_id, 'full' );
-                        
+                    if (get_field( 'ph_image' )):
+                        $inner_header_image_id = get_field( 'ph_image' )['id'];
+                        $inner_header_image = wp_get_attachment_image( $inner_header_image_id, 'full' );
+                    elseif ( get_sub_field('image') ):
+                        $inner_header_image_id = get_sub_field('image')['id'];
+                        $inner_header_image = wp_get_attachment_image( $inner_header_image_id, 'full' );
+                    endif;
+                    
                 break;
                     
             }
@@ -89,5 +97,3 @@ if (have_rows('templates', 'option')) :
 	endwhile;
 	
 endif;
-
-?>
