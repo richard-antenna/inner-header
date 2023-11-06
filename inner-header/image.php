@@ -1,6 +1,4 @@
 <?php
-
-
 switch ( $hero_type ) {
 	
 	case 'home':
