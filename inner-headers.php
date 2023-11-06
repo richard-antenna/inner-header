@@ -1,8 +1,10 @@
 <?php
 
-$hero_type = 'default';
-// $hero_type = get_field("hero_type");
-
+if (get_field("hero_type")) {
+	$hero_type = get_field("hero_type");
+} else {
+	$hero_type = 'default';
+}
 switch ( $hero_type ) {
 	
 	case 'home':
@@ -18,4 +20,3 @@ switch ( $hero_type ) {
 // Style Guide Files
 include ( MODULES . 'inner-header/sample-components.php');
 include ( MODULES . 'inner-header/style-guide-nav.php');
-
